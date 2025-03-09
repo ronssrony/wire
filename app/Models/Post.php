@@ -45,10 +45,9 @@ class Post extends Model
     protected static function booted()
     {
         static::retrieved(function (Post $post) {
-            // Increment views **only** when user visits the single post page (show function)
             if (!app()->runningInConsole() && request()->isMethod('GET') && request()->routeIs('show.post')) {
               $alreadyViewed= View::where('user_id',Auth::id())->where('post_id',$post->id)->exists();
-               if(!$alreadyViewed){
+               if(!$alreadyViewed && Auth::check()){
                    View::create([
                        'user_id' => Auth::id(),
                        'post_id' =>$post->id

@@ -4,14 +4,13 @@
 
         <form action="{{route('update.post' ,$post->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
+            @method('PATCH')
             <!-- Title -->
             <div class="mb-4">
+                <input type="hidden" name="requestUrl" value="{{ url()->previous() }}">
                 <label for="title" class="block text-md font-medium text-gray-700">Title</label>
-                <textarea  type="text" name="title" id="title"  class="text-left resize-none mt-1 p-2 w-full text-2xl md:text-3xl border-none ring-b-2 focus:ring-0 font-semibold outline-none" placeholder="Title">
-                    {{ old('title',$post->title) }}
+                <input  type="text" name="title" id="title" value=" {{ old('title',$post->title) }}"  class="text-left resize-none mt-1 p-2 w-full text-2xl md:text-3xl border-none ring-b-2 focus:ring-0 font-semibold outline-none" placeholder="Title">
 
-                </textarea>
                 @error('title')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror

@@ -115,6 +115,7 @@ class PostController extends Controller
      */
     public function edit(Post $post , $id)
     {
+
         $post = $this->getPost($id);
         $post->categorieIds = $post->categories->pluck('id')->toArray();
         $post->authorIds  = $post->authors->pluck('id')->toArray();
@@ -129,6 +130,7 @@ class PostController extends Controller
 
         public function update(Request $request, $id)
     {
+
         $post = Post::findOrFail($id);
 
         $request->validate([
@@ -170,7 +172,8 @@ class PostController extends Controller
         $post->categories()->sync($categories);
         $post->authors()->sync($authors);
 
-        return redirect()->route('dashboard')->with('success', 'Post updated successfully!');
+
+        return redirect($request->requestUrl)->with('success', 'Post updated successfully!');
     }
 
 
@@ -178,7 +181,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $posti , $id)
+    public function destroy(Post $post , $id)
     {
         Post::destroy($id);
         return redirect()->back() ;
@@ -193,5 +196,25 @@ class PostController extends Controller
             : 'No content available';
         return $post;
 }
+
+   public function myPosts(){
+        $posts = Post::with(['user','categories','views','authors','comments'=>function ($db){$db->with('user')->latest();}])->withCount(['likes'=>function($db){
+            $db->where('liked','1');
+        }])->where('user_id' , Auth::id())->latest()->get();
+       $posts->each(function ($post) {
+           $post->liked = $post->isLikedByUser();
+
+           $post->content_text = Storage::disk('public')->exists($post->content)
+               ? Storage::disk('public')->get($post->content)
+               : 'No content available';
+
+           $post->description = preg_replace('/<img[^>]+\>/i', '', $post->content_text);
+           $post->description = strip_tags($post->description);
+       });
+
+       $categories = Category::select('id','name')->get();
+
+       return view('wire.my-posts', compact('posts'));
+   }
 
 }

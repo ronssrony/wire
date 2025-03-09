@@ -26,7 +26,11 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-
+                        @if(auth()->user()->role!=='user')
+                            <x-dropdown-link :href="route('myPosts')">
+                                {{ __('My Posts') }}
+                            </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

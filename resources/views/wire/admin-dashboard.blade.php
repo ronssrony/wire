@@ -4,15 +4,32 @@
    <div>
        <div class="flex justify-between">
            <h1 class="text-2xl font-bold tracking-wider">Admin Dashboard</h1>
-          <a href="{{route('admin.users')}}">
-              <x-bladewind::button
-                  size="small"
-                  type="secondary"
-                  icon="arrow-small-right"
-                  icon_right="true">
-                  Users
-              </x-bladewind::button>
-          </a>
+          <div class="flex gap-2">
+              <a href="{{route('admin.users')}}">
+                  <x-bladewind::button
+                      size="small"
+                      type="secondary"
+                      icon="arrow-small-right"
+                      icon_right="true"
+                      color="cyan"
+                  >
+
+                      Users
+                  </x-bladewind::button>
+              </a>
+
+              <a href="{{route('admin.categories')}}">
+                  <x-bladewind::button
+                      size="small"
+                      type="secondary"
+                      icon="arrow-small-right"
+                      icon_right="true"
+                      color="pink"
+                  >
+                      Categories
+                  </x-bladewind::button>
+              </a>
+          </div>
 
        </div>
        <x-bladewind::table divider="thin">
@@ -40,7 +57,7 @@
                        <td>{{ \Carbon\Carbon::parse($post->created_at)->format('d M Y H:i') }}</td>
                        <td>
                            <a href="{{ route('show.post', $post->id) }}" class="text-yellow-500 hover:text-yellow-700">view</a>|
-                           <a href="{{ route('edit.post', $post->id) }}" class="text-yellow-500 hover:text-yellow-700">Edit</a> |
+                           <a href="{{ route('editPost', $post->id) }}" class="text-yellow-500 hover:text-yellow-700">Edit</a> |
                            <form action="{{ route('destroy.post', $post->id) }}" method="POST" style="display:inline;">
                                @csrf
                                @method('DELETE')

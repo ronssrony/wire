@@ -10,7 +10,8 @@ class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
-
+    protected $guarded = [];
+    public $timestamps = false;
     public function posts():BelongsToMany
     {
         return $this->belongsToMany(Post::class);

@@ -1,6 +1,6 @@
 
-    <nav class="flex w-full justify-between items-center">
-        <h1 class=" text-4xl font-extrabold  text-black tracking-[5px] " >WIRE</h1>
+    <nav class="flex w-full justify-between items-center mb-5 ">
+        <a href="{{route('dashboard')}}" class=" text-4xl font-extrabold  text-black tracking-[5px] " >WIRE</a>
         <ul class="flex gap-3 items-center ">
             <a href="{{route('login')}}">Write</a>
 

@@ -1,11 +1,13 @@
 
 <x-layout>
-
-    @include('components.wire.dash-navbar')
-
+    @if(auth()->check())
+        @include('components.wire.dash-navbar')
+    @else
+        @include('components.wire.root-navbar')
+    @endif
 
     <div class="flex  flex-col gap-4 justify-center items-center  w-full relative ">
-        <div x-data="{ scroll: $refs.category.scrollLeft }" class="relative ">
+        <div x-data="{ scroll: $refs.category.scrollLeft }" class=" sticky top-0 backdrop-blur-md z-20 bg-white/50  dark:bg-[#1b1b18] ">
             <div x-ref="category" class="max-w-[800px] overflow-hidden scrollbar-hide h-10 w-full border-b border-t border-gray-200 flex items-center gap-1 px-3 whitespace-nowrap scroll-smooth">
 
                 @foreach($categories as $category)

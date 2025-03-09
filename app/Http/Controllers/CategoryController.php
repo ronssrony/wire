@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('wire.admin-categories', compact('categories'));
     }
     public function postsByCategory($id)
     {
@@ -44,7 +45,12 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $validatedData = request()->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+        Category::create($validatedData);
+        return redirect()->back();
     }
 
     /**
@@ -66,24 +72,40 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Category $category , $id)
     {
+        $category = Category::find($id) ;
+        return view('wire.admin-category-edit', compact('category'));
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category, $id)
     {
-        //
+        $category = Category::find($id) ;
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        // Update the category with the validated data
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        // Redirect the user with a success message
+        return redirect()->route('admin.categories')->with('success', 'Category updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category, $id)
     {
-        //
+        Category::destroy($id);
+        return redirect()->back();
     }
 }
