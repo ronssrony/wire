@@ -1,7 +1,18 @@
 <x-layout>
     @include('components.wire.dash-navbar')
     <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6 mt-10">
+        <x-bladewind::button outline="true" color="gray" class=" fixed z-20 bottom-20 right-20  !bg-emerald-400 focus:ring-0  text-white !rounded-full !px-6 border-none !py-3" onclick="showModal('noblur')">
+            Confused?
+        </x-bladewind::button>
 
+        <x-bladewind::modal
+            title="Confused? Ask Ai to help you"
+            blur_size="none"
+            size="xl"
+            show_action_buttons="false"
+            name="noblur">
+          @include('components.wire.deepseek-ai');
+        </x-bladewind::modal>
 
         <form action="{{route('store.post')}}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -58,6 +69,7 @@
     </div>
 
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
             var quill = new Quill("#editor", {
                 theme: "snow",
